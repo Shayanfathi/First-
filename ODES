@@ -1,0 +1,63 @@
+import math
+import matplotlib.pyplot as plt
+
+
+dx= lambda x,t: (-x*x*x)+math.sin(t) #function 1
+#you can insert other function here if needed
+
+ti=0.0 #starting time
+tf=100 #final time
+h=0.4 #step
+n=int((tf-ti)/h) #number of iterations
+x=0 #x initial value
+t=0 #t final value
+
+t_plot1=[] #empty list for values of t
+x_euler=[] #empty list for values of function
+#if you have more functions don't forget to add lists
+def euler(x,t):
+    for i in range(1, n+1): #This loop will run until the number of iterations are completed
+        t_plot1.append(t) #append values
+        x_euler.append(x) #don't forget to add more if needed
+        x=x+dx(x,t)*h #euler method if you have multiple functions add them under
+        t=t+h 
+    return x_euler, t_plot1 #if you have more list add them here
+    
+
+
+
+t_plot2=[]
+x_midpoint=[]
+x=0
+t=0
+def midpoint(x,t):
+    for i in range(1, n+1):  #This loop will run until the number of iterations are completed
+        x_midpoint.append(x) 
+        t_plot2.append(t) #don't forget to add more if needed
+        k1 = dx(x,t)*h/2 #K1 you need more K1 if there are more functions
+        k2 = h*dx(x+k1,t+h/2) #K2 you need more k2 if there are more functions
+        x = x+k2 #Midpoint formula to update x #you need to update also the other values
+        t = t+h
+    return x_midpoint, t_plot2
+
+t_plot3=[]
+x_rk4=[]
+def rk4(x,t):
+    for i in range(1, n+1):  #This loop will run until the number of iterations are completed
+        x_rk4.append(x)
+        t_plot3.append(t)
+        k1 = dx(x,t)*h/2 #K1 you may need more
+        k2 = 0.5*h*dx(x+k1,t+h/2) #K2 you mat need more
+        k3= h*dx(x+k2, t+h/2) #k3 you may need more
+        k4= h*dx(x+k3, t+h) #k4 you may need more
+        x = x+(1/6)*(2*k1+4*k2+2*k3+k4) #Midpoint formula to update x you need to update all of them
+        t = t+h
+    return x_rk4, t_plot3
+
+euler(x,t) #recall the function
+midpoint(x,t)
+rk4(x,t)
+
+plt.plot(t_plot1, x_euler, color="b") #plot
+plt.plot(t_plot2, x_midpoint, color="k")
+plt.plot(t_plot3, x_rk4, color="r")
